@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center; /* Center align components horizontally */
   align-items: center; /* Align components vertically */
-  gap: 20px; /* Space between the components */
+  gap: 1px; /* Space between the components */
+  margin-top: 40px;
 }
 
