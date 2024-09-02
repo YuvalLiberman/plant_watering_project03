@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import React from 'react';
+import Plantpic from './plant_component.js';
+import VerticalScale from './millilitre_scale_component.js';
+import LiquidGaugeComponent from './LiquidGauge';
+import plantPicture1 from './plantPicture1.png';
+import plantPicture2 from './plantPicture2.png';
+import plantPicture3 from './plantPicture3.png';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ul>
+        <li>
+          <div className="components-container">
+            <VerticalScale />
+            <Plantpic image={plantPicture1} />
+            <LiquidGaugeComponent />
+          </div>
+        </li>
+        <li>
+          <div className="components-container">
+            <VerticalScale />
+            <Plantpic image={plantPicture2} />
+            <LiquidGaugeComponent />
+          </div>
+        </li>
+        <li>
+          <div className="components-container">
+            <VerticalScale />
+            <Plantpic image={plantPicture3} />
+            <LiquidGaugeComponent />
+          </div>
+        </li>
+      </ul>
     </div>
   );
 }
