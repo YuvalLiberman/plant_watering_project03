@@ -8,7 +8,7 @@ const LiquidGaugeComponent = () => {
     let testint = 57;
     const [value, setValue] = useState(0);
     const startColor = '#6495ed'; // cornflowerblue
-    const endColor = '#dc143c'; // crimson
+    const endColor = '#00008B'; // crimson
 
     const radius = 70;
     const interpolate = interpolateRgb(startColor, endColor);

@@ -1,74 +1,86 @@
-
+// VerticalSlider.js
 import React, { useState, useRef, useEffect } from 'react';
-import './millilitre_scale_styling.css';
+import './millilitre_scale_component.css'; // Import CSS for styling
 
-const MAX_VALUE = 500; // The highest value of the scale
-const SCALE_HEIGHT = 272; // The height of the scale in pixels
- 
-const VerticalScale = () => {
-  const [level, setLevel] = useState(0);
+const VerticalSlider = ({ min = 0, max = 500, step = 1, buttonLabel = "" }) => {
+  const [value, setValue] = useState(min);
   const [dragging, setDragging] = useState(false);
-  const scaleRef = useRef(null);
+  const sliderRef = useRef(null);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!dragging) return;
-      const scaleRect = scaleRef.current.getBoundingClientRect();
-      const offset = e.clientY - scaleRect.top;
-      const newLevel = Math.min(
-        Math.max(0, offset),
-        scaleRect.height - 30 // Adjust if your toggle height changes
-      );
-      setLevel(newLevel);
-    };
-
-    const handleMouseUp = () => {
-      setDragging(false);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-
-    if (dragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [dragging]);
-
-  const handleMouseDown = (e) => {
-    e.preventDefault(); // Prevent default behavior
+  const handleStart = (e) => {
+    e.preventDefault();
     setDragging(true);
   };
 
-  const calculateValue = (level) => {
-    // Map pixel position to the range 0 - MAX_VALUE
-    return Math.round(((SCALE_HEIGHT - level) / SCALE_HEIGHT) * MAX_VALUE);
+  const handleMove = (e) => {
+    if (!dragging || !sliderRef.current) return;
+
+    const sliderRect = sliderRef.current.getBoundingClientRect();
+    const sliderHeight = sliderRect.height;
+    const sliderTop = sliderRect.top;
+
+    // Handle touch events
+    const clientY = e.clientY || e.touches[0].clientY;
+
+    // Calculate new value
+    const newValue = max - ((clientY - sliderTop) / sliderHeight) * (max - min);
+    
+    // Round and clamp the new value to ensure it's within the min and max range
+    const roundedValue = Math.round(newValue / step) * step;
+    const clampedValue = Math.min(max, Math.max(min, roundedValue));
+
+    if (!isNaN(clampedValue)) {
+      setValue(clampedValue);
+    }
   };
 
-  const handlePrintLevel = () => {
-    console.log(`Current level: ${calculateValue(level)}`);
+  const handleEnd = () => {
+    setDragging(false);
   };
+
+  useEffect(() => {
+    if (dragging) {
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleEnd);
+      document.addEventListener('touchmove', handleMove); // For mobile touch
+      document.addEventListener('touchend', handleEnd);   // For mobile touch
+    } else {
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleMove); // For mobile touch
+      document.removeEventListener('touchend', handleEnd);   // For mobile touch
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleMove); // For mobile touch
+      document.removeEventListener('touchend', handleEnd);   // For mobile touch
+    };
+  }, [dragging]);
 
   return (
-    <div className="scale-container" ref={scaleRef}>
-      <div
-        className="scale-toggle"
-        style={{ top: level }}
-        onMouseDown={handleMouseDown}
-      />
-      <div className="level-display" style={{ top: level }}>
-        {calculateValue(level)}
-      </div>
-      <button onClick={handlePrintLevel} className="print-button">
-        Print Level
+    <div className="slider-container">
+      <button className="slider-button" onClick={() => console.log(value)}>
+        {buttonLabel}
       </button>
+      <div
+        className="vertical-slider"
+        onMouseDown={handleStart}
+        onTouchStart={handleStart} // For mobile touch
+        ref={sliderRef}
+      >
+        <div className="slider-track">
+          <div
+            className="slider-thumb"
+            style={{ bottom: `${((value - min) / (max - min)) * 100}%` }}
+          />
+        </div>
+        <div className="slider-value">{value}ml</div>
+      </div>
     </div>
   );
 };
 
-export default VerticalScale;
-  //
+export default VerticalSlider;
+

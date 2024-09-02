@@ -6,29 +6,30 @@
   }
   
   .slider-button {
-    margin-bottom: 14px; /* Space between the button and the slider */
+    margin-bottom: 8px;
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 18px;
     color: white;
-    background-color: #007bff;
+    background-color: #210514a7;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     width: 30px;
     height: 30px;
   }
   
   .slider-button:hover {
-    background-color: #0056b3;
+    background-color: #3b74f1;
   }
   
   .vertical-slider {
     position: relative;
-    width: 40px;
-    height: 200px;
+    width: 33px;
+    height: 180px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #f9f9f9;
+    touch-action: none; /* Disable default touch actions */
   }
   
   .slider-track {

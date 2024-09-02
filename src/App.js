@@ -1,16 +1,16 @@
 import React from 'react';
 import Plantpic from './plant_component.js';
-import VerticalScale from './millilitre_scale_component.js';
 import LiquidGaugeComponent from './LiquidGauge';
 import plantPicture1 from './plantPicture1.png';
 import plantPicture2 from './plantPicture2.png';
 import plantPicture3 from './plantPicture3.png';
+import SliderWithValue from './millilitre_scale_component.js';
 import './App.css';
-import SliderWithValue from './testing.js';
 
 function App() {
   return (
     <div className="App">
+      <h2>the remote watering app</h2>
       <ul>
         <li>
           <div className="components-container">
@@ -39,4 +39,4 @@ function App() {
 }
 
 export default App;
- 
+
