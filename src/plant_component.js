@@ -9,4 +9,4 @@ function Plantpic(prop) {
     )
 }
 
-export default Plantpic; 
+export default Plantpic;  

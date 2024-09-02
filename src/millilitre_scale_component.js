@@ -4,7 +4,7 @@ import './millilitre_scale_styling.css';
 
 const MAX_VALUE = 500; // The highest value of the scale
 const SCALE_HEIGHT = 272; // The height of the scale in pixels
-
+ 
 const VerticalScale = () => {
   const [level, setLevel] = useState(0);
   const [dragging, setDragging] = useState(false);
