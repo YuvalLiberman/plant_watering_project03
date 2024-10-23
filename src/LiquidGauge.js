@@ -1,12 +1,11 @@
 // src/LiquidGauge.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LiquidFillGauge from 'react-liquid-gauge';
 import { color } from 'd3-color';
 import { interpolateRgb } from 'd3-interpolate';
 
-const LiquidGaugeComponent = () => {
-    let testint = 57;
-    const [value, setValue] = useState(0);
+const LiquidGaugeComponent = ({ moistureValue }) => {
+    const [value, setValue] = useState(moistureValue);
     const startColor = '#6495ed'; // cornflowerblue
     const endColor = '#00008B'; // crimson
 
@@ -34,8 +33,12 @@ const LiquidGaugeComponent = () => {
         }
     ];
 
+    useEffect(() => {
+        setValue(moistureValue); // Update value when moistureValue changes
+    }, [moistureValue]);
+
     return (
-        <div>
+        <div style={{ height: '85px'}}>
             <LiquidFillGauge
                 style={{ margin: '0 auto' }}
                 width={radius * 2}
@@ -83,26 +86,8 @@ const LiquidGaugeComponent = () => {
                     fill: color('#fff').toString(),
                     fontFamily: 'Arial'
                 }}
-                onClick={() => {
-                    setValue(Math.random() * 100);
-                }}
             />
-            <div
-                style={{
-                    margin: '20px auto',
-                    width: 120
-                }}
-            >
-                <button
-                    type="button"
-                    className="btn btn-default btn-block"
-                    onClick={() => {
-                        setValue(testint);
-                    }}
-                >
-                    Refresh
-                </button>
-            </div>
+            
         </div>
     );
 };
