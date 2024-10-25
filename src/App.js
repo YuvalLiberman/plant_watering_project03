@@ -39,21 +39,21 @@ function App() {
       <ul>
         <li>
           <div className="components-container">
-            <SliderWithValue />
+            <SliderWithValue pumpNumber = {0}/>
             <Plantpic image={plantPicture1} />
             <LiquidGaugeComponent moistureValue={plantMoisturePercentages[0]} />
           </div>
         </li>
         <li>
           <div className="components-container">
-            <SliderWithValue />
+            <SliderWithValue pumpNumber = {1}/>
             <Plantpic image={plantPicture2} />
             <LiquidGaugeComponent moistureValue={plantMoisturePercentages[1]} />
           </div>
         </li>
         <li>
           <div className="components-container">
-            <SliderWithValue />
+            <SliderWithValue pumpNumber = {2}/>
             <Plantpic image={plantPicture3} />
             <LiquidGaugeComponent moistureValue={plantMoisturePercentages[2]} />
           </div>

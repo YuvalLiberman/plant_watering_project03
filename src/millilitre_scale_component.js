@@ -1,69 +1,74 @@
 // VerticalSlider.js
-import React, { useState, useRef, useEffect } from 'react';
-import './millilitre_scale_component.css'; // Import CSS for styling
+import React, { useState, useRef, useEffect } from 'react'
+import './millilitre_scale_component.css'
+import sendPumpCommandPOST from './api_requests.js'
 
-const VerticalSlider = ({ min = 0, max = 500, step = 1, buttonLabel = "" }) => {
-  const [value, setValue] = useState(min);
-  const [dragging, setDragging] = useState(false);
-  const sliderRef = useRef(null);
+const VerticalSlider = ({ min = 0, max = 500, step = 1, buttonLabel = "", pumpNumber }) => {
+  const [value, setValue] = useState(min)
+  const [dragging, setDragging] = useState(false)
+  const sliderRef = useRef(null)
 
   const handleStart = (e) => {
-    e.preventDefault();
-    setDragging(true);
-  };
+    e.preventDefault()
+    setDragging(true)
+  }
 
   const handleMove = (e) => {
-    if (!dragging || !sliderRef.current) return;
+    if (!dragging || !sliderRef.current) return
 
-    const sliderRect = sliderRef.current.getBoundingClientRect();
-    const sliderHeight = sliderRect.height;
-    const sliderTop = sliderRect.top;
+    const sliderRect = sliderRef.current.getBoundingClientRect()
+    const sliderHeight = sliderRect.height
+    const sliderTop = sliderRect.top
 
     // Handle touch events
-    const clientY = e.clientY || e.touches[0].clientY;
+    const clientY = e.clientY || e.touches[0].clientY
 
     // Calculate new value
-    const newValue = max - ((clientY - sliderTop) / sliderHeight) * (max - min);
+    const newValue = max - ((clientY - sliderTop) / sliderHeight) * (max - min)
     
     // Round and clamp the new value to ensure it's within the min and max range
-    const roundedValue = Math.round(newValue / step) * step;
-    const clampedValue = Math.min(max, Math.max(min, roundedValue));
+    const roundedValue = Math.round(newValue / step) * step
+    const clampedValue = Math.min(max, Math.max(min, roundedValue))
 
     if (!isNaN(clampedValue)) {
-      setValue(clampedValue);
+      setValue(clampedValue)
     }
-  };
+  }
 
   const handleEnd = () => {
-    setDragging(false);
-  };
+    setDragging(false)
+  }
 
   useEffect(() => {
     if (dragging) {
-      document.addEventListener('mousemove', handleMove);
-      document.addEventListener('mouseup', handleEnd);
-      document.addEventListener('touchmove', handleMove); // For mobile touch
-      document.addEventListener('touchend', handleEnd);   // For mobile touch
+      document.addEventListener('mousemove', handleMove)
+      document.addEventListener('mouseup', handleEnd)
+      document.addEventListener('touchmove', handleMove) // For mobile touch
+      document.addEventListener('touchend', handleEnd)   // For mobile touch
     } else {
-      document.removeEventListener('mousemove', handleMove);
-      document.removeEventListener('mouseup', handleEnd);
-      document.removeEventListener('touchmove', handleMove); // For mobile touch
-      document.removeEventListener('touchend', handleEnd);   // For mobile touch
+      document.removeEventListener('mousemove', handleMove)
+      document.removeEventListener('mouseup', handleEnd)
+      document.removeEventListener('touchmove', handleMove) // For mobile touch
+      document.removeEventListener('touchend', handleEnd)   // For mobile touch
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleMove);
-      document.removeEventListener('mouseup', handleEnd);
-      document.removeEventListener('touchmove', handleMove); // For mobile touch
-      document.removeEventListener('touchend', handleEnd);   // For mobile touch
-    };
-  }, [dragging]);
+      document.removeEventListener('mousemove', handleMove)
+      document.removeEventListener('mouseup', handleEnd)
+      document.removeEventListener('touchmove', handleMove) // For mobile touch
+      document.removeEventListener('touchend', handleEnd)   // For mobile touch
+    }
+  }, [dragging])
 
   return (
     <div className="slider-container">
-      <button className="slider-button" onClick={() => console.log(value)}>
-        {buttonLabel}
+      <button className="slider-button" onClick={() => {
+        sendPumpCommandPOST(pumpNumber, value)
+        .then(response => console.log('Response:', response))
+        .catch(error => console.error('Error:', error))}}>
+    {buttonLabel}
       </button>
+
       <div
         className="vertical-slider"
         onMouseDown={handleStart}
@@ -79,8 +84,8 @@ const VerticalSlider = ({ min = 0, max = 500, step = 1, buttonLabel = "" }) => {
         <div className="slider-value">{value}ml</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default VerticalSlider;
+export default VerticalSlider
 
